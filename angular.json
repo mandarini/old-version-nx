@@ -7,7 +7,7 @@
       "projectType": "application",
       "architect": {
         "build": {
-          "builder": "@nrwl/node:build",
+          "builder": "@nrwl/node:webpack",
           "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/apps/api",
@@ -30,7 +30,7 @@
           }
         },
         "serve": {
-          "builder": "@nrwl/node:execute",
+          "builder": "@nrwl/node:node",
           "options": {
             "buildTarget": "api:build"
           }
@@ -46,7 +46,7 @@
           "builder": "@nrwl/jest:jest",
           "outputs": ["coverage/apps/api"],
           "options": {
-            "jestConfig": "apps/api/jest.config.js",
+            "jestConfig": "apps/api/jest.config.ts",
             "passWithNoTests": true
           }
         }
@@ -154,18 +154,17 @@
           "builder": "@nrwl/jest:jest",
           "outputs": ["coverage/apps/web"],
           "options": {
-            "jestConfig": "apps/web/jest.config.js",
+            "jestConfig": "apps/web/jest.config.ts",
             "passWithNoTests": true
           }
         },
         "storybook": {
-          "builder": "@nrwl/storybook:storybook",
+          "builder": "@storybook/angular:start-storybook",
           "options": {
-            "uiFramework": "@storybook/angular",
             "port": 4400,
-            "config": {
-              "configFolder": "apps/web/.storybook"
-            }
+            "configDir": "apps/web/.storybook",
+            "browserTarget": "web:build",
+            "compodoc": false
           },
           "configurations": {
             "ci": {
@@ -174,14 +173,13 @@
           }
         },
         "build-storybook": {
-          "builder": "@nrwl/storybook:build",
+          "builder": "@storybook/angular:build-storybook",
           "outputs": ["{options.outputPath}"],
           "options": {
-            "uiFramework": "@storybook/angular",
-            "outputPath": "dist/storybook/web",
-            "config": {
-              "configFolder": "apps/web/.storybook"
-            }
+            "outputDir": "dist/storybook/web",
+            "configDir": "apps/web/.storybook",
+            "browserTarget": "web:build",
+            "compodoc": false
           },
           "configurations": {
             "ci": {
